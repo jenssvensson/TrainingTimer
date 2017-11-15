@@ -1,0 +1,14 @@
+<p>
+  Countdown: {{displayCountdown}}
+</p>
+<p>
+  Finished: {{finished}}
+</p>
+<p>
+  Exercise: {{displayExercise}}
+</p>
+<button (click)="startTraining()" mat-raised-button color="accent">Start</button>
+<button (click)="pauseTraining($event)" mat-raised-button color="primary">Paus</button>
+<button (click)="resumeTraining($event)" mat-raised-button color="warn">Resume</button>
+
+<button (click)="stopTraining($event)" mat-raised-button color="warn">Stop</button>
