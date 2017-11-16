@@ -1,0 +1,12 @@
+.timer-view {
+  margin: 0 auto;
+  max-width: 940px;
+}
+.center {
+  margin: auto;
+}
+.countdown {
+  font-size: 72px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}

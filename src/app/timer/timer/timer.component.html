@@ -1,14 +1,21 @@
-<p>
-  Countdown: {{displayCountdown}}
-</p>
-<p>
-  Finished: {{finished}}
-</p>
-<p>
-  Exercise: {{displayExercise}}
-</p>
-<button (click)="startTraining()" mat-raised-button color="accent">Start</button>
-<button (click)="pauseTraining($event)" mat-raised-button color="primary">Paus</button>
-<button (click)="resumeTraining($event)" mat-raised-button color="warn">Resume</button>
-
-<button (click)="stopTraining($event)" mat-raised-button color="warn">Stop</button>
+<div class="timer-view">
+  <mat-card>
+    <mat-card-title fxLayout fxLayoutAlign="center center">
+      <h6> Exercise {{displayExercise}}</h6>
+    </mat-card-title>
+    <mat-card-content fxLayout fxLayoutAlign="center center">
+      <span class="countdown">
+        Countdown: {{displayCountdown}}
+      </span>
+    </mat-card-content>
+    <mat-card-actions fxLayout fxLayoutAlign="center center">
+      <button (click)="startTraining()" mat-raised-button color="accent">Start</button>
+      <button (click)="pauseTraining($event)" mat-raised-button color="primary">Paus</button>
+      <button (click)="resumeTraining($event)" mat-raised-button color="primary">Resume</button>
+      <button (click)="stopTraining($event)" mat-raised-button color="warn">Stop</button>
+    </mat-card-actions>
+    <mat-card-title fxLayout fxLayoutAlign="center center">
+      <h6>Next Exercise: {{nextExercise}}</h6>
+    </mat-card-title>
+  </mat-card>
+</div>

@@ -8,11 +8,13 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { TimerComponent } from './timer/timer/timer.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TimerComponent
+    TimerComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

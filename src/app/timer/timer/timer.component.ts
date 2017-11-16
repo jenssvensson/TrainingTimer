@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { MatButtonModule } from '@angular/material';
 import { Observable } from 'rxjs/Rx';
 import { Subject, BehaviorSubject } from 'rxjs/Rx';
 
@@ -14,6 +13,7 @@ export class TimerComponent implements OnInit {
   public displayCountdown;
   public finished = 'Not finished';
   public displayExercise = '';
+  public nextExercise = '';
   public countdownSeconds = 60;
   // Move to service later
   private exercises = [
@@ -30,6 +30,7 @@ export class TimerComponent implements OnInit {
   private pauseControl = new Subject<Event>();
   private pause;
   private resume;
+  private timer;
 
   constructor() { }
 
@@ -47,11 +48,10 @@ export class TimerComponent implements OnInit {
 
   startTraining(): void {
     this.nextSequence();
-    console.log('startTraining');
   }
 
   nextSequence(): void {
-    console.log('nextSequence');
+
     if (this.exercises.length > 0) {
       // Get next exercises in queue
       let ex = this.exercises.shift();
@@ -60,35 +60,38 @@ export class TimerComponent implements OnInit {
         runup = 5;
       }
       this.displayExercise = ex.exercise;
+
       if (ex.type === 'rest') {
         this.displayExercise = 'Rest';
+      }
+
+      if (this.exercises.length > 0) {
+        if (this.exercises[0].type === 'rest') {
+          this.displayExercise = 'Rest';
+        } else {
+          this.nextExercise = this.exercises[0].exercise;
+        }
       }
       this.interval = Observable.timer(0, 1000).mapTo(-1);
       this.countdownSeconds = ex.time;
       this.startTimer();
       return;
     }
-    this.finished = 'Finished';
-
   }
 
   startTimer(): void {
-    let timer$ = Observable
+    this.timer = Observable
     .merge(this.pause, this.resume)
     .startWith(this.interval)
     .switchMap(val => val)
     // if pause button is clicked stop countdown
-    .take(this.countdownSeconds + 1)
+    .take(this.countdownSeconds)
     .scan((acc, curr) => curr ? curr + acc : acc, this.countdownSeconds)
     .subscribe(
       i => this.displayCountdown = i,
-      error => this.finished = 'error',
+      error => error,
       () => this.nextSequence()
       )
-  }
-
-  private updateCountdown(): void {
-
   }
 
   pauseTraining(event: Event): void {
@@ -100,6 +103,7 @@ export class TimerComponent implements OnInit {
   }
 
   stopTraining(event: Event): void {
-    this.resumeControl.next(event);
+    this.timer.unsubscribe();
+    // TODO reset everything
   }
 }

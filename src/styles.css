@@ -5,3 +5,7 @@ body {
   margin: 0px;
   padding: 0px;
 }
+
+.app-background {
+  background: #303030;
+}
