@@ -1,3 +1,6 @@
+import { ExerciseType } from './../../common/models/exercise-type';
+import { Exercise } from './../../common/models/exercise';
+import { WorkoutService } from './../../common/workout/workout.service';
 import { Observable } from 'rxjs/Observable';
 import { SoundService } from './../sound/sound.service';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
@@ -18,15 +21,7 @@ export class TimerComponent implements OnInit {
   public nextExercise = '';
   public countdownSeconds = 60;
   // Move to service later
-  private exercises = [
-    { exercise: 'deadlift', time: 10, type: 'work' },
-    { exercise: '', time: 5, type: 'rest' },
-    { exercise: 'situps', time: 10, type: 'work' },
-    { exercise: '', time: 5, type: 'rest' },
-    { exercise: 'deadlift', time: 5, type: 'work' },
-    { exercise: 'pushups', time: 10, type: 'rest' },
-    { exercise: 'deadlift', time: 10, type: 'work' }
-  ];
+  private workout: Array<Exercise>;
 
   private interval;
   private resumeControl: Subject<Event>;
@@ -34,45 +29,44 @@ export class TimerComponent implements OnInit {
   private pause: Observable<Observable<boolean>>;
   private resume;
   private timer: Subscription;
+  ExerciseType = ExerciseType;
 
-  constructor(private soundService: SoundService) { }
+  constructor(private soundService: SoundService, private workoutService: WorkoutService) { }
 
   ngOnInit() {
-
     this.interval = Observable.timer(0, 1000).mapTo(-1);
-
     this.resumeControl = new Subject<Event>();
     this.pauseControl = new Subject<Event>();
-
     this.pause = this.pauseControl.asObservable().mapTo(Observable.of(false));
     this.resume = this.resumeControl.asObservable().mapTo(this.interval);
   }
 
   startTraining(): void {
+    this.workout = this.workoutService.getWorkout(10, 3);
     this.nextSequence();
   }
 
   nextSequence(): void {
 
-    if (this.exercises.length > 0) {
+    if (this.workout.length > 0) {
       // Get next exercises in queue
-      let ex = this.exercises.shift();
+      let ex = this.workout.shift();
 
-      if (ex.type === 'work') {
+      if (ex.type !== ExerciseType.rest) {
         this.soundService.playStartSound();
       }
       this.displayExercise = ex.exercise;
 
-      if (ex.type === 'rest') {
+      if (ex.type === ExerciseType.rest) {
         this.soundService.playStopSound();
         this.displayExercise = 'Rest';
       }
 
-      if (this.exercises.length > 0) {
-        if (this.exercises[0].type === 'rest') {
+      if (this.workout.length > 0) {
+        if (this.workout[0].type === ExerciseType.rest) {
           this.displayExercise = 'Rest';
         } else {
-          this.nextExercise = this.exercises[0].exercise;
+          this.nextExercise = this.workout[0].exercise;
         }
       }
       this.interval = Observable.timer(0, 1000).mapTo(-1);
@@ -89,7 +83,7 @@ export class TimerComponent implements OnInit {
     .switchMap(val => val)
     // if pause button is clicked stop countdown
     .take(this.countdownSeconds)
-    .scan((acc, curr) => curr ? curr + acc : acc, this.countdownSeconds)
+    .scan((acc, curr) => curr ? <number> curr + <number> acc : acc, this.countdownSeconds)
     .subscribe(
       i => this.displayCountdown = i,
       error => error,
