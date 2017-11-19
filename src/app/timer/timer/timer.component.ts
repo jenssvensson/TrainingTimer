@@ -1,6 +1,8 @@
+import { SoundService } from './../sound.service';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { Subject, BehaviorSubject } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-timer',
@@ -18,6 +20,7 @@ export class TimerComponent implements OnInit {
   // Move to service later
   private exercises = [
     { exercise: 'deadlift', time: 10, type: 'work' },
+    { exercise: '', time: 5, type: 'rest' },
     { exercise: 'situps', time: 10, type: 'work' },
     { exercise: '', time: 5, type: 'rest' },
     { exercise: 'deadlift', time: 5, type: 'work' },
@@ -30,9 +33,9 @@ export class TimerComponent implements OnInit {
   private pauseControl = new Subject<Event>();
   private pause;
   private resume;
-  private timer;
+  private timer: Subscription;
 
-  constructor() { }
+  constructor(private soundService: SoundService) { }
 
   ngOnInit() {
 
@@ -43,7 +46,6 @@ export class TimerComponent implements OnInit {
 
     this.pause = this.pauseControl.asObservable().mapTo(Observable.of(false));
     this.resume = this.resumeControl.asObservable().mapTo(this.interval);
-
   }
 
   startTraining(): void {
@@ -55,13 +57,14 @@ export class TimerComponent implements OnInit {
     if (this.exercises.length > 0) {
       // Get next exercises in queue
       let ex = this.exercises.shift();
-      let runup = 0;
+
       if (ex.type === 'work') {
-        runup = 5;
+        this.soundService.playStartSound();
       }
       this.displayExercise = ex.exercise;
 
       if (ex.type === 'rest') {
+        this.soundService.playStopSound();
         this.displayExercise = 'Rest';
       }
 
