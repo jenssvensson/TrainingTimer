@@ -1,4 +1,4 @@
-import { SoundService } from './timer/sound.service';
+import { SoundService } from './timer/sound/sound.service';
 import { AngularMaterialModule } from './common/angular-material/angular-material.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

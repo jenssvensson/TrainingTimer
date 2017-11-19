@@ -1,6 +1,6 @@
-import { SoundService } from './../sound.service';
+import { Observable } from 'rxjs/Observable';
+import { SoundService } from './../sound/sound.service';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
 import { Subject, BehaviorSubject } from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -29,9 +29,9 @@ export class TimerComponent implements OnInit {
   ];
 
   private interval;
-  private resumeControl;
-  private pauseControl = new Subject<Event>();
-  private pause;
+  private resumeControl: Subject<Event>;
+  private pauseControl: Subject<Event>;
+  private pause: Observable<Observable<boolean>>;
   private resume;
   private timer: Subscription;
 
@@ -107,6 +107,7 @@ export class TimerComponent implements OnInit {
 
   stopTraining(event: Event): void {
     this.timer.unsubscribe();
+    this.soundService.playFailSound();
     // TODO reset everything
   }
 }
