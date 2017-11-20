@@ -1,12 +1,16 @@
 .timer-view {
-  margin: 0 auto;
+  margin: 50px auto;
   max-width: 940px;
 }
 .center {
   margin: auto;
 }
 .countdown {
-  font-size: 72px;
+  font-size: 96px;
+  font-weight: bold;
   margin-top: 30px;
   margin-bottom: 30px;
+}
+.lighter-font {
+  font-weight: lighter;
 }

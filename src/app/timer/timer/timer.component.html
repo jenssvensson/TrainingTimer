@@ -1,11 +1,11 @@
 <div class="timer-view">
   <mat-card>
     <mat-card-title fxLayout fxLayoutAlign="center center">
-      <h6> Exercise {{displayExercise}}</h6>
+      <h4><small>Exercise:</small> <strong> {{displayExercise | capitalize}}</strong></h4>
     </mat-card-title>
     <mat-card-content fxLayout fxLayoutAlign="center center">
       <span class="countdown">
-        Countdown: {{displayCountdown}}
+        {{displayCountdown | secondsMinutes}}
       </span>
     </mat-card-content>
     <mat-card-actions fxLayout fxLayoutAlign="center center">
@@ -15,7 +15,7 @@
       <button (click)="stopTraining($event)" mat-raised-button color="warn">Stop</button>
     </mat-card-actions>
     <mat-card-title fxLayout fxLayoutAlign="center center">
-      <h6>Next Exercise: {{nextExercise}}</h6>
+      <h4><small>Next Exercise:</small> <strong>{{nextExercise | capitalize}}</strong></h4>
     </mat-card-title>
   </mat-card>
 </div>

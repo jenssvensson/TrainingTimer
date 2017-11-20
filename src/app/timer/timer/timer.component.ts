@@ -15,8 +15,7 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class TimerComponent implements OnInit {
 
-  public displayCountdown;
-  public finished = 'Not finished';
+  public displayCountdown = 0;
   public displayExercise = '';
   public nextExercise = '';
   public countdownSeconds = 60;
@@ -50,27 +49,27 @@ export class TimerComponent implements OnInit {
 
     if (this.workout.length > 0) {
       // Get next exercises in queue
-      let ex = this.workout.shift();
+      let currentExercise = this.workout.shift();
 
-      if (ex.type !== ExerciseType.rest) {
+      if (currentExercise.type !== ExerciseType.rest) {
         this.soundService.playStartSound();
       }
-      this.displayExercise = ex.exercise;
 
-      if (ex.type === ExerciseType.rest) {
+      this.displayExercise = currentExercise.exercise;
+
+      if (currentExercise.type === ExerciseType.rest) {
         this.soundService.playStopSound();
         this.displayExercise = 'Rest';
       }
 
       if (this.workout.length > 0) {
         if (this.workout[0].type === ExerciseType.rest) {
-          this.displayExercise = 'Rest';
+          this.nextExercise = 'Rest';
         } else {
           this.nextExercise = this.workout[0].exercise;
         }
       }
-      this.interval = Observable.timer(0, 1000).mapTo(-1);
-      this.countdownSeconds = ex.time;
+      this.countdownSeconds = currentExercise.time;
       this.startTimer();
       return;
     }
@@ -85,10 +84,10 @@ export class TimerComponent implements OnInit {
     .take(this.countdownSeconds)
     .scan((acc, curr) => curr ? <number> curr + <number> acc : acc, this.countdownSeconds)
     .subscribe(
-      i => this.displayCountdown = i,
+      i => this.displayCountdown = <number> i,
       error => error,
       () => this.nextSequence()
-      )
+    )
   }
 
   pauseTraining(event: Event): void {
@@ -102,6 +101,8 @@ export class TimerComponent implements OnInit {
   stopTraining(event: Event): void {
     this.timer.unsubscribe();
     this.soundService.playFailSound();
-    // TODO reset everything
+    this.displayCountdown = 0;
+    this.displayExercise = '';
+    this.nextExercise = '';
   }
 }
