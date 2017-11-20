@@ -42,7 +42,8 @@ export class TimerComponent implements OnInit, OnDestroy {
   }
 
   startWorkout(): void {
-    this.workout = this.workoutService.getWorkout(10, 3);
+    this.workout = this.workoutService.getWorkout(2, 3, 10, 5, 20).map(x => Object.assign({}, x));;
+    // this.workout = this.workoutService.getDefaultWorkout().map(x => Object.assign({}, x));
     this.nextSequence();
   }
 
@@ -54,7 +55,6 @@ export class TimerComponent implements OnInit, OnDestroy {
       if (currentExercise.type !== ExerciseType.rest) {
         this.soundService.playStartSound();
       }
-
       this.displayExercise = currentExercise.exercise;
 
       if (currentExercise.type === ExerciseType.rest) {
@@ -81,7 +81,7 @@ export class TimerComponent implements OnInit, OnDestroy {
     .startWith(this.interval)
     .switchMap(val => val)
     .take(this.countdownSeconds)
-    .scan((acc, curr) => curr ? <number> curr + <number> acc : acc, this.countdownSeconds)
+    .scan((acc, curr) => curr ? curr + acc : acc, this.countdownSeconds)
     .subscribe(
       i => this.displayCountdown = <number> i,
       error => error,
@@ -108,6 +108,7 @@ export class TimerComponent implements OnInit, OnDestroy {
     this.displayCountdown = 0;
     this.displayExercise = '';
     this.nextExercise = '';
+    this.workout = null;
     this.paused.next(false);
     this.pausedButtonText = 'Pause';
   }
