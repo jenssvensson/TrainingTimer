@@ -10,12 +10,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { TimerComponent } from './timer/timer/timer.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { SecondsMinutesPipe } from './common/pipes/seconds-minutes.pipe';
+import { CapitalizePipe } from './common/pipes/capitalize.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     TimerComponent,
-    NavbarComponent
+    NavbarComponent,
+    SecondsMinutesPipe,
+    CapitalizePipe
   ],
   imports: [
     BrowserModule,
