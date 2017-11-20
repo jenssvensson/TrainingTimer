@@ -19,15 +19,16 @@ export class TimerComponent implements OnInit {
   public displayExercise = '';
   public nextExercise = '';
   public countdownSeconds = 60;
-  // Move to service later
-  private workout: Array<Exercise>;
+  public pausedButtonText = 'Pause';
 
-  private interval;
+  private workout: Array<Exercise>;
+  private interval: Observable<number>;
   private resumeControl: Subject<Event>;
   private pauseControl: Subject<Event>;
   private pause: Observable<Observable<boolean>>;
-  private resume;
-  private timer: Subscription;
+  private resume: Observable<Observable<number>>;
+  private paused: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public timer: Subscription;
   ExerciseType = ExerciseType;
 
   constructor(private soundService: SoundService, private workoutService: WorkoutService) { }
@@ -40,7 +41,7 @@ export class TimerComponent implements OnInit {
     this.resume = this.resumeControl.asObservable().mapTo(this.interval);
   }
 
-  startTraining(): void {
+  startWorkout(): void {
     this.workout = this.workoutService.getWorkout(10, 3);
     this.nextSequence();
   }
@@ -80,7 +81,6 @@ export class TimerComponent implements OnInit {
     .merge(this.pause, this.resume)
     .startWith(this.interval)
     .switchMap(val => val)
-    // if pause button is clicked stop countdown
     .take(this.countdownSeconds)
     .scan((acc, curr) => curr ? <number> curr + <number> acc : acc, this.countdownSeconds)
     .subscribe(
@@ -90,15 +90,19 @@ export class TimerComponent implements OnInit {
     )
   }
 
-  pauseTraining(event: Event): void {
+  toogleWorkout(event: Event): void {
+    if (this.paused.getValue()) {
+      this.resumeControl.next(event);
+      this.paused.next(false);
+      this.pausedButtonText = 'Pause';
+      return;
+    }
     this.pauseControl.next(event);
+    this.paused.next(true);
+    this.pausedButtonText = 'Resume';
   }
 
-  resumeTraining(event: Event): void {
-    this.resumeControl.next(event);
-  }
-
-  stopTraining(event: Event): void {
+  stopWorkout(event: Event): void {
     this.timer.unsubscribe();
     this.soundService.playFailSound();
     this.displayCountdown = 0;

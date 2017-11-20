@@ -9,10 +9,24 @@
       </span>
     </mat-card-content>
     <mat-card-actions fxLayout fxLayoutAlign="center center">
-      <button (click)="startTraining()" mat-raised-button color="accent">Start</button>
-      <button (click)="pauseTraining($event)" mat-raised-button color="primary">Paus</button>
-      <button (click)="resumeTraining($event)" mat-raised-button color="primary">Resume</button>
-      <button (click)="stopTraining($event)" mat-raised-button color="warn">Stop</button>
+      <button (click)="startWorkout()" 
+        mat-raised-button color="accent" 
+        class="mat-large-button first-button">
+          Start
+      </button>
+      <button (click)="toogleWorkout($event)" 
+        mat-raised-button color="primary" 
+        [disabled]="!timer"
+        class="mat-large-button">
+            {{pausedButtonText}}
+      </button>
+      <!--<button (click)="resumeTraining($event)" mat-raised-button color="primary">Resume</button>-->
+      <button (click)="stopWorkout($event)" 
+        mat-raised-button color="warn" 
+        [disabled]="!timer"
+        class="mat-large-button">
+          Stop
+      </button>
     </mat-card-actions>
     <mat-card-title fxLayout fxLayoutAlign="center center">
       <h4><small>Next Exercise:</small> <strong>{{nextExercise | capitalize}}</strong></h4>

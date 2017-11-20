@@ -14,3 +14,14 @@
 .lighter-font {
   font-weight: lighter;
 }
+/* Move this to material module? */
+.mat-large-button {
+  width: 200px;
+  height: 50px;
+  font-size: 20px;
+  border-radius: 4px;
+}
+/* There is a first child rule which reset margins for button which is the reason the below */
+.first-button {
+  margin: 0 4px !important;
+}
