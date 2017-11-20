@@ -3,7 +3,7 @@ import { Exercise } from './../../common/models/exercise';
 import { WorkoutService } from './../../common/workout/workout.service';
 import { Observable } from 'rxjs/Observable';
 import { SoundService } from './../sound/sound.service';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Subject, BehaviorSubject } from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./timer.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class TimerComponent implements OnInit {
+export class TimerComponent implements OnInit, OnDestroy {
 
   public displayCountdown = 0;
   public displayExercise = '';
@@ -47,9 +47,8 @@ export class TimerComponent implements OnInit {
   }
 
   nextSequence(): void {
-
     if (this.workout.length > 0) {
-      // Get next exercises in queue
+      // Get next exercises in queue.
       let currentExercise = this.workout.shift();
 
       if (currentExercise.type !== ExerciseType.rest) {
@@ -104,9 +103,16 @@ export class TimerComponent implements OnInit {
 
   stopWorkout(event: Event): void {
     this.timer.unsubscribe();
+    this.timer = null;
     this.soundService.playFailSound();
     this.displayCountdown = 0;
     this.displayExercise = '';
     this.nextExercise = '';
+    this.paused.next(false);
+    this.pausedButtonText = 'Pause';
+  }
+
+  ngOnDestroy() {
+    this.timer.unsubscribe();
   }
 }

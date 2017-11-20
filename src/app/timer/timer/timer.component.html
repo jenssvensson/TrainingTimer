@@ -20,7 +20,6 @@
         class="mat-large-button">
             {{pausedButtonText}}
       </button>
-      <!--<button (click)="resumeTraining($event)" mat-raised-button color="primary">Resume</button>-->
       <button (click)="stopWorkout($event)" 
         mat-raised-button color="warn" 
         [disabled]="!timer"
@@ -29,7 +28,7 @@
       </button>
     </mat-card-actions>
     <mat-card-title fxLayout fxLayoutAlign="center center">
-      <h4><small>Next Exercise:</small> <strong>{{nextExercise | capitalize}}</strong></h4>
+      <h4><small>Next:</small> <strong>{{nextExercise | capitalize}}</strong></h4>
     </mat-card-title>
   </mat-card>
 </div>
