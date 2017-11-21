@@ -31,8 +31,8 @@ let block = [
 
 let workout: Array<Exercise> = block;
 workout.push({ exercise: '', type: 0, time: 180 });
-// workout = workout.concat(block);
-// workout.push({ exercise: '', type: 0, time: 180 });
-// workout = workout.concat(block);
+workout = workout.concat(block);
+workout.push({ exercise: '', type: 0, time: 180 });
+workout = workout.concat(block);
 
 export const DefaultWorkout: Array<Exercise> = workout;

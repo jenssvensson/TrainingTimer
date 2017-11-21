@@ -1,4 +1,8 @@
-# TrainingTimer
+# WorkoutTimer
+
+Interval timer for my personal exercises. Is in continuous state of development so it might be broken at times when new features added. 
+
+Currently running with a default workout (possible to do a complete random by code changes).
 
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.24.
 
@@ -29,3 +33,15 @@ Run `ng github-pages:deploy` to deploy to Github Pages.
 ## Further help
 
 To get more help on the `angular-cli` use `ng help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Upcoming features/Ideas for the future
+
+- Selectors for workout
+- Tests
+- Workout service rebuild with Obeservables?
+- Sidebar showing exercise list
+- Backend/DB
+- Personal accounts
+- Save workouts/exercises
+- D3 graphs
+- Weight graphs

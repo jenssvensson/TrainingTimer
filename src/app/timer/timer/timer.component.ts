@@ -42,15 +42,16 @@ export class TimerComponent implements OnInit, OnDestroy {
   }
 
   startWorkout(): void {
-    this.workout = this.workoutService.getWorkout(2, 3, 10, 5, 20).map(x => Object.assign({}, x));;
-    // this.workout = this.workoutService.getDefaultWorkout().map(x => Object.assign({}, x));
+    // this.workout = this.workoutService.getWorkout(10, 3, 45, 15, 240).map(x => Object.assign({}, x));;
+    this.workout = this.workoutService.getDefaultWorkout().map(x => Object.assign({}, x));
+    console.log(this.workout)
     this.nextSequence();
   }
 
   nextSequence(): void {
     if (this.workout.length > 0) {
       // Get next exercises in queue.
-      let currentExercise = this.workout.shift();
+      let currentExercise: Exercise = this.workout.shift();
 
       if (currentExercise.type !== ExerciseType.rest) {
         this.soundService.playStartSound();

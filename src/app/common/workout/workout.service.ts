@@ -21,15 +21,15 @@ export class WorkoutService {
   ): Array<Exercise> {
     let workout: Array<Exercise> = [];
     let exercises = Exercises;
-    let rest = { exercise: '', type: ExerciseType.rest, time: restPeriod };
-    let blockRest = { exercise: '', type: ExerciseType.rest, time: blockRestPeriod };
+    let rest: Exercise = { exercise: '', type: ExerciseType.rest, time: restPeriod };
+    let blockRest: Exercise = { exercise: '', type: ExerciseType.rest, time: blockRestPeriod };
     let block: Array<Exercise> = [];
 
     for (let j = 0; j < numberOfExercises; j++) {
       let type = (j % 3) + 1;
       let index = Math.floor(Math.random() * exercises[type].length);
       let pickedExercise = exercises[type].splice(index, 1).pop();
-      let exercise = { exercise: pickedExercise, type: type, time: activePeriod };
+      let exercise: Exercise = { exercise: pickedExercise, type: type, time: activePeriod };
       block.push(exercise);
       block.push(rest);
     }
