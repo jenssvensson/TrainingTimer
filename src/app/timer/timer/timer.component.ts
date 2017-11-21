@@ -44,7 +44,6 @@ export class TimerComponent implements OnInit, OnDestroy {
   startWorkout(): void {
     // this.workout = this.workoutService.getWorkout(10, 3, 45, 15, 240).map(x => Object.assign({}, x));;
     this.workout = this.workoutService.getDefaultWorkout().map(x => Object.assign({}, x));
-    console.log(this.workout)
     this.nextSequence();
   }
 
